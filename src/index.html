@@ -1,0 +1,48 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resizable Text Input</title>
+  <style>
+    input {
+      box-sizing: border-box;
+      width: 200px; /* Set your desired fixed width */
+      max-width: 100%; /* Ensure it doesn't exceed the fixed width */
+      font-size: 16px; /* Set an initial font size */
+    }
+
+    #output {
+      font-size: 16px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <input type="text" oninput="adjustFontSize(this)" />
+  <p id="output"></p>
+  <script>
+    function adjustFontSize(input) {
+      const paragraph = document.getElementById('output');
+      const maxWidth = parseInt(window.getComputedStyle(paragraph).width);
+      const textWidth = getTextWidth(input.value, input.style.font);
+      const scaleFactor = maxWidth / textWidth;
+      const newFontSize = 16 * scaleFactor; // Assuming initial font size is 16px
+
+      paragraph.style.fontSize = `${newFontSize}px`;
+      paragraph.textContent = input.value;
+    }
+
+    function getTextWidth(text, font) {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      context.font = font || "16px Arial"; // Use the same font as in the input
+      const metrics = context.measureText(text);
+      return metrics.width;
+    }
+  </script>
+</body>
+</html>
